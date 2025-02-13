@@ -18,10 +18,17 @@ class BOCBankAppointment {
     @SneakyThrows
     public static void main(String[] args) {
         List<String> dates = Arrays.asList("20250221");
-        List<String> districts = Arrays.asList("油尖旺区", "湾仔区");
+        List<String> districts = Arrays.asList("油尖旺区", "中西区", "深水埗区");
         while (true) {
             System.out.println("开始检查可预约的银行...");
-            if (!availableDistrict(districts) || !availableDate(dates)) {
+
+            boolean match = false;
+            try {
+                match = availableDistrict(districts) && availableDate(dates);
+            } catch (Exception e) {
+                System.out.println("检查可预约的银行失败: " + e.getMessage());
+            }
+            if (!match) {
                 long waitSecond = (long) (Math.random() * 10000 + 1000);
                 System.out.println(String.format("没有可预约的银行, 等待：%s秒后重试", waitSecond / 1000));
                 Thread.sleep(waitSecond);
